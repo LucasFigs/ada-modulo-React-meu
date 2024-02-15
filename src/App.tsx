@@ -1,16 +1,16 @@
+import { useState } from "react";
 import "./App.scss";
+import CaixaItemRestaurante from "./components/CaixaItemRestaurante/CaixaItemRestaurante";
 import CaixaRestaurante from './components/CaixaRestaurante/CaixaRestaurante';
+import restaurantes from "./data/restaurantesAndItens.json";
 
 function App() {
 
-  const restauranteDonaFlorinda = {
-    nome: "Chez Pierre",
-    descricao: "Uma pitoresca brasserie francesa com pratos clássicos e ambiente acolhedor.",
-    avaliacao: 4.5,
-    categoria: "Francesa",
-    tempo_de_entrega: 40,
-    valor_entrega: 6,
-  };
+  const [restauranteEscolhido, definirRestauranteEscolhido] = useState("");
+
+  function escolherRestaurante(restauranteEscolhido) {
+    definirRestauranteEscolhido(restauranteEscolhido);
+  }
 
   return (
     <>
@@ -20,7 +20,7 @@ function App() {
             <span>Boas vindas, [nome da pessoa]</span>
             <div className="shopping-cart">
               carrinho de compras
-              <span className="badge">2</span>
+              <span className="badge">0</span>
             </div>
           </div>
         </div>
@@ -29,30 +29,30 @@ function App() {
         <section>
           <h2>Restaurantes</h2>
           <ul className="grid" role="list">
-            <CaixaRestaurante restaurante={restauranteDonaFlorinda} />
+            {restaurantes.map((restaurante) => (
+            <button onClick={() => escolherRestaurante(restaurante)} >
+              <CaixaRestaurante key={restaurante.nome} restaurante={restaurante} />
+              </button>))}
+            {/* <CaixaRestaurante restaurante={restauranteDonaFlorinda} /> */}
           </ul>
         </section>
-        <section>
-          <h2>Itens do Restaurante XYZ</h2>
+        {restauranteEscolhido !== "" ? (
+          <section>
+          <h2>Itens do Restaurante {restauranteEscolhido.nome}</h2>
           <ul
             className="grid"
             role="list"
             style={{ "--max": "200px" } as React.CSSProperties}
           >
-            <li>
-              <h3>Nome do item</h3>
-              <p>
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quae,
-                ipsa.
-              </p>
-              <div className="counter">
-                <button>-</button>
-                <span>0</span>
-                <button>+</button>
-              </div>
-            </li>
+            <CaixaItemRestaurante 
+            item={restauranteEscolhido.cardapio[0]}/>
+            <CaixaItemRestaurante 
+            item={restauranteEscolhido.cardapio[1]}/>
           </ul>
         </section>
+        ) : (
+          <></>
+        )}
       </div>
     </>
   );
