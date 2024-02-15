@@ -1,5 +1,12 @@
 interface CaixaRestauranteProps {
-
+    restaurante: { 
+        nome: string;
+        avaliacao: number; 
+        categoria: string;
+        tempo_de_entrega: number; 
+        valor_entrega: number; 
+        descricao: string;
+    };
 }
 
 function CaixaRestaurante(props: CaixaRestauranteProps) {
